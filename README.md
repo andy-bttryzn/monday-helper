@@ -1,5 +1,7 @@
 # monday-helper
 
+![tests](https://github.com/USER/monday-helper/actions/workflows/test.yml/badge.svg)
+
 A minimal, opinionated [monday.com](https://monday.com) CLI + Node library for scripting.
 
 Every command emits JSON to stdout. Errors go to stderr with non-zero exit. Designed to drop into shell pipelines, cron jobs, or any other script that needs monday data without pulling in a full SDK.
@@ -64,6 +66,18 @@ node index.js mutation my-mutation.gql
 ### Why `@file` and `-` for JSON values
 
 Windows PowerShell, cmd.exe, and bash all have different escape rules for embedded quotes. Passing `'{"label":"Done"}'` works fine on bash, but on PowerShell the inner quotes get eaten and the JSON arrives malformed. `@path/to/file.json` and stdin (`-`) sidestep that entirely.
+
+## Tests
+
+```bash
+npm test
+# or
+node --test tests/
+```
+
+17 unit tests on the pure helpers (`levenshtein`, `normalizeName`, `namesMatch`, exports surface). Zero dependencies — Node 18's built-in `node:test`.
+
+The HTTP-touching commands (`whoami`, `boards`, writes, etc.) aren't unit-tested here — they'd require either real API access or a mock layer. For production deployment, wrap in an integration test that hits a sandbox monday account.
 
 ## Library
 
