@@ -11,6 +11,14 @@
     "test": "node --test \"tests/*.test.js\""
   },
   "license": "MIT",
+  "author": "Andy Worford",
+  "keywords": [
+    "monday.com",
+    "graphql",
+    "cli",
+    "project-management",
+    "automation"
+  ],
   "engines": {
     "node": ">=18"
   }
