@@ -1,0 +1,16 @@
+{
+  "name": "monday-helper",
+  "version": "1.0.0",
+  "description": "Minimal monday.com CLI + Node library for scripting.",
+  "main": "index.js",
+  "bin": {
+    "monday-helper": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+token.txt
+*.token
+.env
+.env.local
+.DS_Store
