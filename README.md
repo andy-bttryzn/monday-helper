@@ -75,7 +75,7 @@ npm test
 node --test tests/
 ```
 
-17 unit tests on the pure helpers (`levenshtein`, `normalizeName`, `namesMatch`, exports surface). Zero dependencies; Node 18's built-in `node:test`.
+22 unit tests on the pure helpers (`levenshtein`, `normalizeName`, `namesMatch`, `resolveValueArg`, exports surface). Zero dependencies; Node 18's built-in `node:test`.
 
 The HTTP-touching commands (`whoami`, `boards`, writes, etc.) aren't unit-tested here; they'd require either real API access or a mock layer. For production deployment, wrap in an integration test that hits a sandbox monday account.
 

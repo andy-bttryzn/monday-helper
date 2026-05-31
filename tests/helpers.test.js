@@ -5,7 +5,10 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 
-const { levenshtein, normalizeName, namesMatch } = require('../index.js');
+const path = require('node:path');
+const fs = require('node:fs');
+const os = require('node:os');
+const { levenshtein, normalizeName, namesMatch, resolveValueArg } = require('../index.js');
 
 // ---------- levenshtein ----------
 
@@ -88,11 +91,39 @@ test('namesMatch: empty strings', () => {
   assert.equal(namesMatch('', ''), true);
 });
 
+// ---------- resolveValueArg ----------
+
+test('resolveValueArg: raw JSON object string parses', () => {
+  assert.deepEqual(resolveValueArg('{"a":1}'), { a: 1 });
+});
+
+test('resolveValueArg: non-JSON string falls through to raw', () => {
+  assert.equal(resolveValueArg('plain string'), 'plain string');
+});
+
+test('resolveValueArg: @file with valid JSON loads it', () => {
+  const tmp = path.join(os.tmpdir(), `mh-${Date.now()}.json`);
+  fs.writeFileSync(tmp, '{"label":"Done"}');
+  assert.deepEqual(resolveValueArg('@' + tmp), { label: 'Done' });
+  fs.unlinkSync(tmp);
+});
+
+test('resolveValueArg: @missing-file throws clean error', () => {
+  assert.throws(() => resolveValueArg('@/this/does/not/exist.json'), /file not found/);
+});
+
+test('resolveValueArg: @file with malformed JSON throws named error', () => {
+  const tmp = path.join(os.tmpdir(), `mh-bad-${Date.now()}.json`);
+  fs.writeFileSync(tmp, 'not json');
+  assert.throws(() => resolveValueArg('@' + tmp), /invalid JSON/);
+  fs.unlinkSync(tmp);
+});
+
 // ---------- exports surface ----------
 
 test('exports include the documented helpers', () => {
   const idx = require('../index.js');
-  for (const name of ['mondayQuery', 'loadToken', 'checkDuplicateItem', 'namesMatch', 'normalizeName', 'levenshtein']) {
+  for (const name of ['mondayQuery', 'loadToken', 'checkDuplicateItem', 'namesMatch', 'normalizeName', 'levenshtein', 'resolveValueArg']) {
     assert.equal(typeof idx[name], 'function', `missing export: ${name}`);
   }
 });

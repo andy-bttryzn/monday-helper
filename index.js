@@ -602,4 +602,5 @@ module.exports = {
   namesMatch,
   normalizeName,
   levenshtein,
+  resolveValueArg,
 };
