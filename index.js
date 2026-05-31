@@ -296,12 +296,23 @@ function resolveValueArg(valueArg) {
   if (typeof valueArg !== 'string') return valueArg;
   if (valueArg.startsWith('@')) {
     const filePath = valueArg.slice(1);
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`file not found: ${filePath}`);
+    }
     const raw = fs.readFileSync(filePath, 'utf8').trim();
-    return JSON.parse(raw);
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      throw new Error(`invalid JSON in ${filePath}: ${e.message}`);
+    }
   }
   if (valueArg === '-') {
     const raw = fs.readFileSync(0, 'utf8').trim();
-    return JSON.parse(raw);
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      throw new Error(`invalid JSON from stdin: ${e.message}`);
+    }
   }
   try { return JSON.parse(valueArg); } catch { return valueArg; }
 }
@@ -361,7 +372,8 @@ async function cmdSetColumns(itemId, boardId, jsonArg) {
     throw new Error('jsonObject not parseable: ' + e.message);
   }
   if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-    throw new Error('jsonObject must be an object');
+    const got = parsed === null ? 'null' : Array.isArray(parsed) ? 'array' : typeof parsed;
+    throw new Error(`jsonObject must be an object (got ${got})`);
   }
   try {
     const data = await mondayQuery(`
