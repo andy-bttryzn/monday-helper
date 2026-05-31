@@ -219,7 +219,7 @@ async function cmdSearch(query, flagArgs) {
   if (!query) throw new Error('usage: search <query> --boards id,id,...');
   const { flags } = parseFlags(flagArgs);
   if (!flags.boards) {
-    throw new Error('search requires --boards id,id,... — no default board list is assumed');
+    throw new Error('search requires --boards id,id,...; no default board list is assumed');
   }
   const targetBoards = flags.boards.split(',').map(s => String(s).trim());
   const out = [];
@@ -314,7 +314,7 @@ function enrichColumnValueError(err, columnId, parsedValue) {
   const hints = [];
   hints.push(`column_id="${columnId}", value=${JSON.stringify(parsedValue)}`);
   hints.push('Canonical formats:');
-  hints.push('  status:         {"label": "Active"}      (NOT {"index": N} — index silently rejects on some columns)');
+  hints.push('  status:         {"label": "Active"}      (NOT {"index": N}; index silently rejects on some columns)');
   hints.push('  board_relation: {"item_ids": [123, 456]}');
   hints.push('  email:          {"email": "x@y.com", "text": "x@y.com"}');
   hints.push('  phone:          {"phone": "5551234567", "countryShortName": "US"}');
