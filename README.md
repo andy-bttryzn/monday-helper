@@ -1,6 +1,6 @@
 # monday-helper
 
-![tests](https://github.com/USER/monday-helper/actions/workflows/test.yml/badge.svg)
+![tests](https://github.com/andy-bttryzn/monday-helper/actions/workflows/test.yml/badge.svg)
 
 A minimal, opinionated [monday.com](https://monday.com) CLI + Node library for scripting.
 
